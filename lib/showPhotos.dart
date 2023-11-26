@@ -89,6 +89,13 @@ class _ShowPhotoPageState extends State<ShowPhotoPage> {
                               ),
                               SizedBox(height: 4.0), // Space between title and subtitle
                               Text(
+                                memories[key]['date'] ?? 'No date',
+                                style: TextStyle(
+                                  fontSize: 12.0,
+                                ),
+                              ),
+                              SizedBox(height: 4.0), // Space between title and subtitle
+                              Text(
                                 memories[key]['description'] ?? 'No description',
                                 style: TextStyle(
                                   fontSize: 14.0,

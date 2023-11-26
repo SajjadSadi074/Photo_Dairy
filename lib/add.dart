@@ -13,12 +13,27 @@ class add extends StatefulWidget {
   _add createState() => _add();
 }
 
+
 class _add extends State<add> {
   final ImagePicker _picker = ImagePicker();
   XFile? _image;
   String? _uploadedFileURL;
   TextEditingController _descriptionController = TextEditingController();
   TextEditingController _titleController = TextEditingController();
+  TextEditingController _dateController = TextEditingController();
+  Future<void> _selectDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(2000),
+      lastDate: DateTime(2025),
+    );
+    if (picked != null && picked != DateTime.now()) {
+      _dateController.text = "${picked.toLocal()}".split(' ')[0];
+    }
+  }
+
+
 
 
   @override
@@ -88,7 +103,9 @@ class _add extends State<add> {
       'title': _titleController.text,
       'description': _descriptionController.text,
       'image': _uploadedFileURL,
+      'date': _dateController.text, // Add this line
     });
+
 
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(content: Text("Memory added successfully")),
@@ -126,13 +143,27 @@ class _add extends State<add> {
                 ? Image.file(
               File(_image!.path),
               width: double.infinity,
-              // Set image width to match the screen width
               height: 200,
-              // Fixed height for the image
-              fit: BoxFit.cover, // Cover the entire widget area
+              fit: BoxFit.cover,
             )
-                : Placeholder(
-                fallbackHeight: 200, fallbackWidth: double.infinity),
+                : Container(
+              width: double.infinity,
+              height: 200,
+              decoration: BoxDecoration(
+                color: Colors.grey[200],
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Icon(Icons.camera_alt, size: 50, color: Colors.grey[600]),
+                  Text(
+                    'Tap the button to select an image',
+                    style: TextStyle(color: Colors.grey[600]),
+                  ),
+                ],
+              ),
+            ),
             SizedBox(height: 20), // Added some space before the button
             ElevatedButton(
               child: Text(
@@ -154,6 +185,21 @@ class _add extends State<add> {
               onPressed: uploadFile,
             ),
             SizedBox(height: 20), // Added some space before the form fields
+
+            TextFormField(
+              controller: _dateController,
+              decoration: InputDecoration(
+                labelText: 'Select Date',
+                hintText: 'Pick a date',
+              ),
+              readOnly: true,
+              onTap: () {
+                FocusScope.of(context).requestFocus(new FocusNode()); // to prevent opening of the keyboard
+                _selectDate(context);
+              },
+            ),
+            SizedBox(height: 10),
+
 
             buildTextFormField(
                 _titleController, // Use the new controller here
@@ -223,15 +269,4 @@ class _add extends State<add> {
       ),
     );
   }
-}
-class Ingredient {
-  String name;
-  String amount;
-
-  Ingredient({required this.name, required this.amount});
-
-  Map<String, String> toJson() => {
-    'name': name,
-    'amount': amount,
-  };
 }

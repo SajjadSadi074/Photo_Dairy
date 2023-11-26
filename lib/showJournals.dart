@@ -87,7 +87,12 @@ class _ShowJournalsPageState extends State<ShowJournalsPage> {
                             maxLines: 2,
                             overflow: TextOverflow.ellipsis,
                           ),
-                          SizedBox(height: 8.0), // Space between title and description
+                          SizedBox(height: 8.0), // Space between title and date
+                          Text(
+                            memories[key]['date'] ?? 'No date',
+                            style: TextStyle(fontSize: 12.0),
+                          ),
+                          SizedBox(height: 4.0), // Reduced space between date and description
                           Expanded(
                             child: Text(
                               memories[key]['description'] ?? 'No description',

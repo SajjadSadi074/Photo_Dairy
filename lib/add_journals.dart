@@ -14,11 +14,22 @@ class add_journals extends StatefulWidget {
 }
 
 class _add_journals extends State<add_journals> {
-  final ImagePicker _picker = ImagePicker();
-  XFile? _image;
-  String? _uploadedFileURL;
+
   TextEditingController _descriptionController = TextEditingController();
   TextEditingController _titleController = TextEditingController();
+  TextEditingController _dateController = TextEditingController();
+  Future<void> _selectDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(2000),
+      lastDate: DateTime(2025),
+    );
+    if (picked != null && picked != DateTime.now()) {
+      _dateController.text = "${picked.toLocal()}".split(' ')[0];
+    }
+  }
+
 
 
   @override
@@ -52,6 +63,7 @@ class _add_journals extends State<add_journals> {
     await dbRef.set({
       'title': _titleController.text,
       'description': _descriptionController.text,
+      'date': _dateController.text,
     });
 
     ScaffoldMessenger.of(context).showSnackBar(
@@ -62,8 +74,6 @@ class _add_journals extends State<add_journals> {
     _titleController.clear();
     _descriptionController.clear();
     setState(() {
-      _image = null;
-      _uploadedFileURL = null;
     });
   }
 
@@ -85,6 +95,20 @@ class _add_journals extends State<add_journals> {
         padding: EdgeInsets.all(16.0), // Added padding to the sides
         child: Column(
           children: <Widget>[
+            SizedBox(height: 20), // Added some space before the form fields
+            TextFormField(
+              controller: _dateController,
+              decoration: InputDecoration(
+                labelText: 'Select Date',
+                hintText: 'Pick a date',
+              ),
+              readOnly: true,
+              onTap: () {
+                FocusScope.of(context).requestFocus(new FocusNode()); // to prevent opening of the keyboard
+                _selectDate(context);
+              },
+            ),
+
             SizedBox(height: 20), // Added some space before the form fields
             buildTextFormField(
                 _titleController, // Use the new controller here
