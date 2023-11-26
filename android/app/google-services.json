@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "381542234938",
+    "firebase_url": "https://memories-in-frames-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "memories-in-frames",
+    "storage_bucket": "memories-in-frames.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:381542234938:android:96fecfce2cfecf77fb2e03",
+        "android_client_info": {
+          "package_name": "com.example.memories_in_frames"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCUkesg_LA24Ij72_6v5OhphK0QU7O5aE8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
