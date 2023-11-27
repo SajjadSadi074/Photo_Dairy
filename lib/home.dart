@@ -7,6 +7,7 @@ import 'showJournals.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'quotes.dart';
 
 
 
@@ -91,8 +92,10 @@ class _HomePageState extends State<HomePage> {
     if (memorySnapshot.exists) {
       memories = Map<dynamic, dynamic>.from(memorySnapshot.value as Map);
     }
-
-    combineAndSortAndGroupData(journals, memories);
+    setState(() {
+      // Update your data variables here
+      combineAndSortAndGroupData(journals, memories);
+    });
   }
 
 
@@ -105,7 +108,12 @@ class _HomePageState extends State<HomePage> {
 
 
   void _onTabTapped(int index) {
-    if (index == 2) { // Assuming "Photos" is at index 2
+    if (index == 4) { // Assuming "Quotes" is at index 4
+      Navigator.of(context).push(
+        MaterialPageRoute(builder: (context) => QuotesPage()),
+      );
+    }
+    else if (index == 2) { // Assuming "Photos" is at index 2
       Navigator.of(context).push(
         MaterialPageRoute(builder: (context) => ShowPhotoPage()),
       );
@@ -250,6 +258,10 @@ class _HomePageState extends State<HomePage> {
           BottomNavigationBarItem(
             icon: Icon(Icons.bookmark),
             label: 'Journals',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.format_quote),
+            label: 'Quotes',
           ),
         ],
       ),
